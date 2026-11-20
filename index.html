@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VAULT KEY - Futuristic Zero-Knowledge Digital Fortress</title>
+  <meta name="description" content="Next-generation client-side encrypted password manager and digital vault. Powered by Web Crypto API AES-256-GCM, PBKDF2, and interactive 3D vault graphics.">
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Cyber Grid Overlay -->
+  <div class="bg-cyber-grid"></div>
+
+  <!-- ==========================================================================
+       Navigation Bar
+       ========================================================================== -->
+  <header>
+    <nav class="navbar">
+      <a href="#" class="nav-brand">
+        <div class="brand-icon">
+          <i data-lucide="shield-check"></i>
+        </div>
+        <span>VAULT KEY</span>
+        <span class="brand-badge">256-GCM</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#hero" class="nav-link" data-nav-target="hero"><i data-lucide="box"></i> 3D Vault</a></li>
+        <li><a href="#dashboard-section" class="nav-link" data-nav-target="dashboard-section"><i data-lucide="lock"></i> Vault Items</a></li>
+        <li><a href="#generator-section" class="nav-link" data-nav-target="generator-section"><i data-lucide="sparkles"></i> Generator</a></li>
+        <li><a href="#security-section" class="nav-link" data-nav-target="security-section"><i data-lucide="shield-alert"></i> 2FA & Audit</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Vault Status Indicator -->
+        <div class="status-pill" id="vault-status-indicator">
+          <span class="status-dot dot-locked"></span> Vault Locked
+        </div>
+
+        <!-- Sound FX Toggle -->
+        <button class="icon-toggle-btn" id="sound-toggle" title="Toggle Sound FX">
+          <i data-lucide="volume-2"></i>
+        </button>
+
+        <!-- Dynamic Unlock/Lock Buttons -->
+        <button class="btn btn-primary btn-sm" id="btn-unlock-vault">
+          <i data-lucide="unlock"></i> Unlock Vault
+        </button>
+        <button class="btn btn-danger btn-sm" id="btn-lock-vault" style="display: none;">
+          <i data-lucide="lock"></i> Lock Vault
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ==========================================================================
+       Hero Section with Interactive 3D Safe Dial
+       ========================================================================== -->
+  <section class="hero-section" id="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <i data-lucide="cpu"></i> Zero-Knowledge Client Architecture
+      </div>
+      <h1 class="hero-title">
+        Next-Gen <span class="gradient-text">Digital Fortress</span> For Passwords.
+      </h1>
+      <p class="hero-desc">
+        Store passwords, private seed phrases, and confidential notes inside an impenetrable client-side vault. Encrypted using military-grade AES-256-GCM and PBKDF2 with 100,000 iterations.
+      </p>
+
+      <div class="hero-cta-group">
+        <button class="btn btn-primary" id="btn-hero-launch">
+          <i data-lucide="key-round"></i> Open Vault
+        </button>
+        <a href="#generator-section" class="btn btn-secondary" data-nav-target="generator-section">
+          <i data-lucide="sparkles"></i> Password Generator
+        </a>
+      </div>
+
+      <!-- Security Specs Strip -->
+      <div class="security-metrics-strip">
+        <div class="metric-item">
+          <span class="metric-val"><i data-lucide="shield"></i> 256-Bit</span>
+          <span class="metric-label">AES-GCM Authenticated</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-val"><i data-lucide="hash"></i> 100,000</span>
+          <span class="metric-label">PBKDF2 SHA-256 Rounds</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-val"><i data-lucide="check-circle-2"></i> 100%</span>
+          <span class="metric-label">Local Zero-Knowledge</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3D Vault Door Interactive Container -->
+    <div class="hero-3d-wrapper">
+      <div class="canvas-3d-box" id="vault-3d-canvas"></div>
+      <div class="canvas-overlay-ui">
+        <span class="canvas-tip"><i data-lucide="move"></i> Drag to rotate dial</span>
+        <button class="btn btn-secondary btn-sm" id="btn-3d-demo-unlock">
+          <i data-lucide="refresh-cw"></i> Cycle Mechanism
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Vault Dashboard Section
+       ========================================================================== -->
+  <main class="main-wrapper" id="dashboard-section">
+    <div class="section-header">
+      <span class="section-badge">Encrypted Storage</span>
+      <h2 class="section-title">Your Secure Vault</h2>
+      <p class="section-subtitle">Zero-knowledge encrypted credentials decrypted on-the-fly in browser memory.</p>
+    </div>
+
+    <!-- Locked State Placeholder -->
+    <div class="vault-locked-banner" id="vault-locked-state">
+      <div class="locked-icon-shield">
+        <i data-lucide="lock" style="width: 36px; height: 36px;"></i>
+      </div>
+      <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem;">Vault is Currently Locked</h3>
+      <p style="color: var(--text-muted); max-width: 480px; margin-bottom: 1.8rem;">
+        Your credentials are fully encrypted with AES-256-GCM. Enter your master password to derive the decryption key in client memory.
+      </p>
+      <button class="btn btn-primary" onclick="window.vaultApp.openMasterModal()">
+        <i data-lucide="unlock"></i> Enter Master Password
+      </button>
+    </div>
+
+    <!-- Unlocked State Dashboard Grid -->
+    <div class="dashboard-unlocked-container" id="vault-unlocked-state" style="display: none;">
+      <div class="dashboard-layout">
+        <!-- Dashboard Sidebar -->
+        <aside class="dash-sidebar">
+          <div class="glass-panel" style="padding: 1.25rem;">
+            <ul class="sidebar-menu">
+              <li>
+                <button class="category-filter-btn active" data-category="all">
+                  <i data-lucide="layers"></i> All Credentials
+                </button>
+              </li>
+              <li>
+                <button class="category-filter-btn" data-category="logins">
+                  <i data-lucide="key-round"></i> Logins & Passwords
+                </button>
+              </li>
+              <li>
+                <button class="category-filter-btn" data-category="notes">
+                  <i data-lucide="file-text"></i> Secure Notes
+                </button>
+              </li>
+              <li>
+                <button class="category-filter-btn" data-category="cards">
+                  <i data-lucide="credit-card"></i> Payment Cards
+                </button>
+              </li>
+              <li>
+                <button class="category-filter-btn" data-category="api_keys">
+                  <i data-lucide="code-2"></i> API Keys & Tokens
+                </button>
+              </li>
+              <li>
+                <button class="category-filter-btn" data-category="favorites">
+                  <i data-lucide="star"></i> Favorites
+                </button>
+              </li>
+            </ul>
+
+            <div class="sidebar-divider"></div>
+
+            <!-- Health Audit Widget -->
+            <div class="audit-mini-card">
+              <div class="audit-mini-header">
+                <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Vault Health</span>
+                <span class="audit-score-pill" id="audit-score-number">95%</span>
+              </div>
+              <div class="audit-stat-row">
+                <span>Total Items</span>
+                <span class="audit-stat-val" id="audit-total-count">0</span>
+              </div>
+              <div class="audit-stat-row">
+                <span>Weak Passwords</span>
+                <span class="audit-stat-val" style="color: var(--accent-rose);" id="audit-weak-count">0</span>
+              </div>
+              <div class="audit-stat-row">
+                <span>Reused Passwords</span>
+                <span class="audit-stat-val" style="color: #F59E0B;" id="audit-reused-count">0</span>
+              </div>
+            </div>
+
+            <div class="sidebar-divider"></div>
+
+            <!-- Backup & Danger Controls -->
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <button class="btn btn-secondary btn-sm" id="btn-export-vault">
+                <i data-lucide="download"></i> Export Encrypted Backup
+              </button>
+              <button class="btn btn-secondary btn-sm" id="btn-import-vault">
+                <i data-lucide="upload"></i> Import Backup File
+              </button>
+              <input type="file" id="input-import-file" accept=".json" style="display: none;">
+              <button class="btn btn-danger btn-sm" id="btn-danger-reset" style="margin-top: 0.5rem;">
+                <i data-lucide="alert-triangle"></i> Wipe Vault Data
+              </button>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Dashboard Main Panel -->
+        <section class="dash-content">
+          <!-- Toolbar -->
+          <div class="vault-toolbar">
+            <div class="search-box">
+              <i data-lucide="search"></i>
+              <input type="text" class="search-input" id="vault-search-input" placeholder="Search logins, websites, usernames, tags...">
+            </div>
+            <div class="toolbar-actions">
+              <span class="status-pill" id="vault-count-badge">0 items</span>
+              <button class="btn btn-primary" id="btn-add-item">
+                <i data-lucide="plus"></i> Add Item
+              </button>
+            </div>
+          </div>
+
+          <!-- Items Grid -->
+          <div class="vault-items-grid" id="vault-items-grid">
+            <!-- Dynamically populated by app.js -->
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- ==========================================================================
+       Password Generator Section
+       ========================================================================== -->
+  <section class="main-wrapper generator-section" id="generator-section">
+    <div class="section-header">
+      <span class="section-badge">Cryptographic Entropy</span>
+      <h2 class="section-title">Ultra-Strong Password Generator</h2>
+      <p class="section-subtitle">Generate cryptographically non-deterministic passwords with entropy & brute-force crack calculation.</p>
+    </div>
+
+    <div class="glass-panel">
+      <div class="generator-grid">
+        <!-- Generator Controls -->
+        <div>
+          <!-- Generated Output Field -->
+          <div class="gen-output-box">
+            <input type="text" class="gen-input font-mono" id="gen-output-field" readonly>
+            <div class="gen-output-actions">
+              <button class="copy-btn" id="btn-regenerate" title="Generate New">
+                <i data-lucide="refresh-cw"></i>
+              </button>
+              <button class="btn btn-primary btn-sm" id="btn-copy-gen">
+                <i data-lucide="copy"></i> Copy
+              </button>
+            </div>
+          </div>
+
+          <!-- Length Slider -->
+          <div class="slider-container">
+            <div class="slider-header">
+              <span class="slider-label">Password Length</span>
+              <span class="slider-val-badge" id="gen-length-val">20</span>
+            </div>
+            <input type="range" class="custom-range" id="gen-length-slider" min="8" max="64" value="20">
+          </div>
+
+          <!-- Checkbox Options -->
+          <div class="options-grid">
+            <label class="checkbox-card">
+              <input type="checkbox" id="gen-opt-upper" checked>
+              <span class="checkbox-label">Uppercase (A-Z)</span>
+            </label>
+            <label class="checkbox-card">
+              <input type="checkbox" id="gen-opt-lower" checked>
+              <span class="checkbox-label">Lowercase (a-z)</span>
+            </label>
+            <label class="checkbox-card">
+              <input type="checkbox" id="gen-opt-numbers" checked>
+              <span class="checkbox-label">Numbers (0-9)</span>
+            </label>
+            <label class="checkbox-card">
+              <input type="checkbox" id="gen-opt-symbols" checked>
+              <span class="checkbox-label">Symbols (!@#$%)</span>
+            </label>
+            <label class="checkbox-card" style="grid-column: 1 / -1;">
+              <input type="checkbox" id="gen-opt-ambiguous">
+              <span class="checkbox-label">Exclude Ambiguous Characters (l, 1, I, O, 0)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Real-Time Strength & Entropy Metrics -->
+        <div class="strength-analyzer-panel">
+          <div class="stat-box">
+            <div class="stat-box-title">Cryptographic Strength</div>
+            <div class="stat-box-val" id="gen-strength-label" style="color: var(--accent-emerald);">Military Grade (100%)</div>
+            <div class="strength-bar-track">
+              <div class="strength-bar-fill" id="gen-strength-fill" style="width: 100%; background: var(--accent-emerald);"></div>
+            </div>
+          </div>
+
+          <div class="stats-card-group">
+            <div class="stat-box">
+              <div class="stat-box-title">Shannon Entropy</div>
+              <div class="stat-box-val font-mono" id="gen-entropy-val">128.4 bits</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-box-title">Brute-Force Offline Attack</div>
+              <div class="stat-box-val" id="gen-crack-time" style="font-size: 1.1rem; color: var(--accent-cyan);">Trillions of centuries</div>
+            </div>
+          </div>
+
+          <!-- Live Custom Password Tester -->
+          <div class="stat-box">
+            <div class="stat-box-title">Audit Your Existing Password</div>
+            <input type="text" class="form-input font-mono" id="live-analyzer-input" placeholder="Type any password to test resilience..." style="margin-top: 0.5rem;">
+            <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.85rem;">
+              <span id="analyzer-label" style="color: var(--text-dim);">Awaiting input</span>
+              <span id="analyzer-crack-time" style="color: var(--accent-cyan);">—</span>
+              <span id="analyzer-entropy" class="font-mono" style="color: var(--text-dim);">—</span>
+            </div>
+            <div class="strength-bar-track" style="margin-top: 0.3rem;">
+              <div class="strength-bar-fill" id="analyzer-bar" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       2FA Authenticator Simulator & Zero-Knowledge Specs
+       ========================================================================== -->
+  <section class="main-wrapper security-specs-section" id="security-section">
+    <div class="section-header">
+      <span class="section-badge">Multi-Factor Armor</span>
+      <h2 class="section-title">2FA Authenticator & Architecture</h2>
+      <p class="section-subtitle">Simulated Time-Based One-Time Passwords (TOTP) and zero-knowledge protocol overview.</p>
+    </div>
+
+    <div class="specs-grid">
+      <!-- 2FA TOTP Card -->
+      <div class="glass-panel">
+        <div class="totp-container">
+          <div class="totp-header">
+            <div>
+              <h3 style="font-size: 1.25rem;">Live 2FA Authenticator</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted);">Rotating 30-second cryptographic tokens</p>
+            </div>
+            <div class="totp-countdown-widget">
+              <span class="font-mono" id="totp-timer-number" style="font-weight: 700; color: var(--accent-cyan);">30</span>
+              <svg class="circular-timer-svg" viewBox="0 0 36 36">
+                <circle class="circular-timer-bg" cx="18" cy="18" r="14" />
+                <circle class="circular-timer-progress" id="totp-timer-circle" cx="18" cy="18" r="14" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="totp-list" id="totp-codes-list">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Zero-Knowledge Security Specs -->
+      <div class="glass-panel" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">The Zero-Knowledge Standard</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+            How Vault Key ensures mathematical isolation from external breaches or compromised networks:
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
+              <div style="background: rgba(0, 240, 255, 0.15); color: var(--accent-cyan); padding: 8px; border-radius: 8px;">
+                <i data-lucide="cpu"></i>
+              </div>
+              <div>
+                <h4 style="font-size: 0.95rem; font-weight: 700;">Client-Side Derivation</h4>
+                <p style="font-size: 0.825rem; color: var(--text-dim);">Keys are derived locally via PBKDF2 with a unique 16-byte cryptographically random salt.</p>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
+              <div style="background: rgba(0, 255, 157, 0.15); color: var(--accent-emerald); padding: 8px; border-radius: 8px;">
+                <i data-lucide="shield-check"></i>
+              </div>
+              <div>
+                <h4 style="font-size: 0.95rem; font-weight: 700;">AES-256-GCM Authenticated Encryption</h4>
+                <p style="font-size: 0.825rem; color: var(--text-dim);">Galois/Counter Mode guarantees confidentiality and data integrity with a fresh 12-byte IV for every write.</p>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
+              <div style="background: rgba(138, 43, 226, 0.15); color: var(--accent-purple); padding: 8px; border-radius: 8px;">
+                <i data-lucide="eye-off"></i>
+              </div>
+              <div>
+                <h4 style="font-size: 0.95rem; font-weight: 700;">Ephemeral Memory Disposal</h4>
+                <p style="font-size: 0.825rem; color: var(--text-dim);">When locked or idle for 5 minutes, encryption keys and plaintexts are zeroed out from memory.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding-top: 1.5rem; border-top: 1px solid var(--border-glass); margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.85rem; color: var(--text-dim);">Ready to secure your credentials?</span>
+          <button class="btn btn-primary btn-sm" onclick="window.vaultApp.openMasterModal()">
+            Launch Vault
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Master Key Auth Modal
+       ========================================================================== -->
+  <div class="modal-overlay" id="master-auth-modal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="master-modal-title">Unlock Digital Vault</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;" id="master-modal-desc">
+            Enter your Master Password to derive the AES-256-GCM encryption key.
+          </p>
+        </div>
+        <button class="modal-close-btn" data-close-modal="master-auth-modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <form id="master-auth-form">
+        <div class="form-group">
+          <label class="form-label" for="master-password-input">Master Password</label>
+          <input type="password" class="form-input font-mono" id="master-password-input" placeholder="Enter master key..." required autocomplete="current-password">
+        </div>
+
+        <div class="form-group" id="master-confirm-group" style="display: none;">
+          <label class="form-label" for="master-confirm-input">Confirm Master Password</label>
+          <input type="password" class="form-input font-mono" id="master-confirm-input" placeholder="Confirm master key..." autocomplete="new-password">
+        </div>
+
+        <div class="form-error-msg" id="master-auth-error"></div>
+
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.8rem;">
+          <button type="button" class="btn btn-secondary" data-close-modal="master-auth-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="master-submit-btn">Unlock Vault</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       Add / Edit Vault Item Modal
+       ========================================================================== -->
+  <div class="modal-overlay" id="vault-item-modal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 class="modal-title" id="item-modal-title">Add To Secure Vault</h3>
+        <button class="modal-close-btn" data-close-modal="vault-item-modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <form id="vault-item-form">
+        <div class="form-group">
+          <label class="form-label" for="item-title-input">Title / Label *</label>
+          <input type="text" class="form-input" id="item-title-input" placeholder="e.g. GitHub Production or Personal Email" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="item-category-select">Category</label>
+          <select class="form-select" id="item-category-select">
+            <option value="logins">Login & Password</option>
+            <option value="notes">Secure Note / Seed Phrase</option>
+            <option value="cards">Payment / Credit Card</option>
+            <option value="api_keys">API Key / Token</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="item-username-input">Account / Username / Email</label>
+          <input type="text" class="form-input font-mono" id="item-username-input" placeholder="e.g. user@domain.com">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="item-password-input">Password / Secret Key</label>
+          <div class="input-with-button">
+            <input type="text" class="form-input font-mono" id="item-password-input" placeholder="Enter password or generate">
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-modal-generate" title="Generate 20-char password">
+              <i data-lucide="sparkles"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="item-url-input">Website URL</label>
+          <input type="url" class="form-input" id="item-url-input" placeholder="https://example.com">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="item-notes-input">Confidential Notes</label>
+          <textarea class="form-textarea" id="item-notes-input" placeholder="Additional recovery codes, security questions, notes..."></textarea>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.8rem;">
+          <button type="button" class="btn btn-secondary" data-close-modal="vault-item-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-item">Save In Vault</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ==========================================================================
+       Footer
+       ========================================================================== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <div class="brand-icon" style="width: 32px; height: 32px;">
+          <i data-lucide="shield-check" style="width: 18px; height: 18px;"></i>
+        </div>
+        <span style="font-weight: 700; letter-spacing: -0.02em;">VAULT KEY</span>
+      </div>
+      <div class="footer-credits">
+        Zero-Knowledge Web Crypto Architecture &bull; Client-Side AES-256-GCM &bull; 100% Private
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Scripts -->
+  <script src="js/crypto-vault.js"></script>
+  <script src="js/generator.js"></script>
+  <script src="js/vault-3d.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
