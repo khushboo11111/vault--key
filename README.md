@@ -1,83 +1,169 @@
-# 🔐 VAULT KEY — Futuristic Zero-Knowledge Digital Vault
+# VaultKey – Secure Personal Password Manager
 
-**VAULT KEY** is a premium, client-side encrypted password manager and digital vault application with modern 3D graphics, real-time cryptographic operations, password generation, and zero-knowledge privacy.
-
----
-
-## ✨ Features & Architecture
-
-### 1. 🛡️ Real Zero-Knowledge Cryptography (Web Crypto API)
-- **Key Derivation (PBKDF2)**: Derives an AES-GCM 256-bit encryption key using `PBKDF2`, `SHA-256`, a fresh 16-byte random salt, and 100,000 iterations.
-- **Authenticated Encryption (AES-256-GCM)**: Galois/Counter Mode guarantees both confidentiality and ciphertext integrity. Every encryption generates a unique 12-byte initialization vector (IV).
-- **Zero-Knowledge Principle**: The master password is never stored or sent across a network. Only the user's master key can decrypt the data in browser memory.
-- **Canary Verifier**: Validates master password accuracy without storing the master key.
-- **Auto-Lock Security**: Automatically zeroes out encryption keys and decrypted credentials from memory after 5 minutes of inactivity or upon clicking **Lock Vault**.
-
-### 2. 🌀 Interactive 3D Vault Lock (Three.js)
-- **3D Mechanical Safe Dial**: Rotating combination ring with metallic PBR materials, tick marks, and rim bolts.
-- **Kinematic Unlock Animation**: Combination dial cycles through angles, retractable locking pins slide inward, and the core aperture shifts from neon cyan (`#00F0FF`) to glowing emerald (`#00FF9D`).
-- **Interactive Parallax**: Reacts dynamically to mouse coordinates with smooth inertia.
-
-### 3. 🔑 Cryptographic Password Engine & Analyzer
-- **Entropy Generation**: Uses `window.crypto.getRandomValues()` with Fisher-Yates shuffling.
-- **Customizable**: Configurable length (8 to 64 chars), character set toggles (uppercase, lowercase, numbers, symbols), and ambiguous character exclusion.
-- **Shannon Entropy Calculation**: Computes exact bits of entropy.
-- **Brute-Force Offline Estimator**: Realistic time-to-crack estimates based on a 100-billion hash/sec GPU cluster.
-- **Live Password Auditor**: Interactive test field allowing users to test existing passwords.
-
-### 4. 🗃️ Secure Vault Dashboard
-- **Credential Categories**: Logins, Secure Notes & Recovery Phrases, Payment Cards, API Keys & Secrets, Favorites.
-- **Real-Time Search & Filtering**: Instant filter across titles, usernames, URLs, and tags.
-- **Masked Password Field**: One-click reveal toggle (`eye`/`eye-off`) and 1-click clipboard copy with auto-clear toasts.
-- **Audit Health Indicator**: Live detection of weak or reused passwords across stored entries.
-- **Backup & Restore**: Export encrypted JSON backups and import them on other machines.
-
-### 5. ⏱️ 2FA Authenticator Simulator
-- Simulated rotating TOTP 6-digit codes with a 30-second circular countdown timer ring.
+> **Zero-Knowledge, Client-Side Encrypted Personal Password & Credential Vault**  
+> Built with HTML5, CSS3, Vanilla JavaScript, and the W3C Web Crypto API.
 
 ---
 
-## 🚀 How to Run the Website
+## 1. Overview & Architecture Philosophy
 
-### Direct Browser Launch (No Node.js or Setup Required):
-Simply double-click `index.html` or open it with any modern web browser:
-- Google Chrome
-- Microsoft Edge
-- Mozilla Firefox
-- Brave / Safari
+**VaultKey** is a personal password manager engineered with a strict **Zero-Knowledge Architecture**. Sensitive records—including passwords, usernames, URLs, notes, and metadata—are encrypted locally in your browser using authenticated **AES-256-GCM** before touching persistent storage.
 
-### Local Development Server (Optional):
-If you have any local HTTP server:
+### Core Tenets
+1. **Never Plaintext at Rest**: No password, note, or credential is ever stored in plaintext.
+2. **Never Stored in Storage**: The Master Password and raw derived encryption keys are **never** stored in `localStorage`, cookies, or persistent database fields.
+3. **In-Memory Ephemeral Session**: When unlocked, the master key exists solely as an unextractable `CryptoKey` in JavaScript heap memory and is immediately evicted upon locking, inactivity timeout, or browser closure.
+4. **Standard Cryptography**: Exclusively relies on standard, non-proprietary W3C Web Crypto API algorithms (`PBKDF2`, `HMAC-SHA-256`, `AES-GCM`).
+
+---
+
+## 2. Cryptographic Security Architecture
+
+```
+[ Master Password ]
+        │
+        ▼ (PBKDF2-HMAC-SHA-256, 310,000 iterations, 16-byte random salt)
+[ 256-bit AES-GCM Master Key ] (Held only in RAM as CryptoKey)
+        │
+        ├─► Decrypts Canary Token (Verifies Master Password validity)
+        │
+        ├─► For each Vault Item:
+        │     ├─► Generates fresh 96-bit CSPRNG IV
+        │     └─► AES-256-GCM Encrypt(Payload, IV) ──► Stored in IndexedDB
+        │
+        └─► On Auto-Lock / Manual Lock / Inactivity:
+              └─► Master Key & Decrypted Array wiped from RAM
+```
+
+### A. Key Derivation (PBKDF2-SHA-256)
+- **Algorithm**: PBKDF2 with HMAC-SHA-256.
+- **Iterations**: `310,000` iterations (meeting OWASP and NIST password-storage recommendations to defend against brute-force and GPU/FPGA dictionary attacks).
+- **Salt**: 16 cryptographically secure random bytes generated via `crypto.getRandomValues(new Uint8Array(16))`.
+
+### B. Authenticated Vault Encryption (AES-256-GCM)
+- **Algorithm**: AES-GCM (Galois/Counter Mode) with 256-bit key length.
+- **Initialization Vector (IV)**: A unique, fresh 96-bit (12-byte) random IV is generated for **every single encryption operation** (`crypto.getRandomValues(new Uint8Array(12))`). IV reuse is strictly prohibited.
+- **Integrity & Authenticity**: AES-GCM generates a 128-bit authentication tag. Any unauthorized bit modification or data corruption in storage triggers a decryption failure (`OperationError`), preventing ciphertext tampering.
+
+### C. Zero-Knowledge Verification Canary
+To verify the master password without saving it or hashing it into an insecure lookup table:
+- A canary token payload (`{"canary":"VAULTKEY_AUTH_OK"}`) is encrypted using the master key.
+- Upon login, the client attempts to decrypt this canary with the derived candidate key.
+- If the authentication tag matches and decryption succeeds, the master password is authenticated.
+- If decryption fails, the candidate key is wrong. Neither the password nor the key is ever transmitted or stored.
+
+### D. Cryptographic Recovery Architecture
+Zero-knowledge applications cannot offer an "email my password" link. VaultKey provides a **Cryptographic Emergency Sheet / Recovery Key**:
+- A 32-character high-entropy Base32 recovery key is generated at vault creation (`VK-XXXX-XXXX-XXXX-XXXX`).
+- An independent cryptographic key is derived from the recovery key with an independent salt.
+- An emergency canary verifies recovery key validity.
+- The user can restore their vault and establish a new master passphrase without creating backdoors.
+
+---
+
+## 3. Threat Model & Security Controls
+
+| Threat | VaultKey Defense |
+|---|---|
+| **Storage snooping / Local file inspection** | IndexedDB holds only ciphertext and random IVs. Plaintext is inaccessible without the master passphrase. |
+| **XSS token stealing** | No credentials or keys are written to `localStorage` or `sessionStorage`. Keys are non-extractable CryptoKey references. |
+| **Tampered ciphertexts** | Authenticated encryption (AES-256-GCM) detects bit manipulation via Galois message authentication tags. |
+| **Device left unattended** | Configurable auto-lock timer (default 5 minutes) evicts the encryption key from RAM on idle. |
+| **Clipboard scraping** | Configurable clipboard auto-clear (15s, 30s, 60s) clears copied credentials from the OS clipboard. |
+| **Master password change** | Atomic re-encryption: decrypts memory records, generates a new salt, derives a new key, re-encrypts all items, and commits to IndexedDB. |
+
+---
+
+## 4. Production Roadmap: Client vs Production-Ready Backend
+
+VaultKey is implemented as a standalone, zero-knowledge browser-based manager. In a full production SaaS deployment across mobile, desktop, and web, the following architecture applies:
+
+| Component | Client-Side Demo / Local (Current) | Production Cloud Architecture |
+|---|---|---|
+| **Encryption** | Client-Side (AES-256-GCM + PBKDF2) | Client-Side (Zero-Knowledge, keys never leave client device) |
+| **Storage at Rest** | Local IndexedDB | Encrypted Cloud Database (PostgreSQL / DynamoDB) storing encrypted blobs |
+| **Syncing** | Manual JSON export / import | Conflict-free Replicated Data Types (CRDTs) or WebSockets with encrypted delta sync |
+| **Authentication** | Local Canary Decryption | SRP-6a (Secure Remote Password) or OPAQUE protocol + Argon2id |
+| **Multi-Factor Auth** | Emergency Sheet | FIDO2 / WebAuthn Hardware Keys (YubiKey) + TOTP |
+| **Transport** | Browser Sandbox | TLS 1.3 with strict HSTS, Certificate Pinning, CSP Headers |
+
+---
+
+## 5. Feature Highlights
+
+- **Visual Dashboard**:
+  - Total credentials, favorites, secure notes, and security health score.
+  - Recent vault activity with 1-click username/password copy.
+  - Quick action links and one-click item creation.
+- **Vault Management**:
+  - Instant live search (press `/` anywhere).
+  - Category filters: *Social Media, Email, Banking, Shopping, Education, Entertainment, Wi-Fi, Other*.
+  - Star / unstar favorites.
+  - Masked password display with toggle reveal.
+  - Grid view and Table/List view toggles.
+- **CSPRNG Password Generator**:
+  - Custom length slider (8 to 64 characters).
+  - Toggles for Uppercase, Lowercase, Numbers, Symbols, Avoid Ambiguous characters.
+  - Presets for PINs, Standard, Strong, and Max Defense (64-char).
+  - Real-time Shannon entropy calculation and estimated crack-time gauge.
+- **Security Health & Vulnerability Audit**:
+  - Automatic detection of weak passwords (< 12 characters or low entropy).
+  - Reused password detection across multiple accounts.
+  - Vault health scoring (0–100%) with direct remediation actions.
+- **Settings & Portability**:
+  - Re-encrypt vault on Master Password change.
+  - Configurable inactivity auto-lock (1m, 5m, 15m, 30m, 1h, Never).
+  - Configurable clipboard auto-clear timeout.
+  - Export encrypted backup (`.json`) with PBKDF2 salt and metadata.
+  - Import encrypted or unencrypted vault backups.
+  - Download printable HTML Emergency Kit.
+  - Light and Dark Mode toggle with preference persistence.
+
+---
+
+## 6. Project File Structure
+
+```
+vaultkey/
+├── index.html        # Clean semantic HTML5 layout & accessible modals
+├── style.css         # Dark navy & purple design system, light/dark mode, CSS variables
+├── script.js         # Web Crypto API engine, IndexedDB operations, audit scanner, UI
+└── README.md         # Comprehensive security documentation & architecture guide
+```
+
+---
+
+## 7. How to Run VaultKey
+
+Because VaultKey utilizes the standard **Web Crypto API** (`window.crypto.subtle`), modern browsers require a **Secure Context** (`https://`, `http://localhost`, or `file://` in Chrome/Firefox/Edge).
+
+### Option A: Open directly in your browser
+Simply double-click `index.html` or drag it into any modern web browser (Chrome, Edge, Firefox, Brave, Safari).
+
+### Option B: Run via a local static server
+
+#### Using Python 3:
 ```bash
-# Using Python (if installed)
-python -m http.server 3000
+cd C:\Users\a\.gemini\antigravity\scratch\vaultkey
+python -m http.server 8080
+```
+Open [http://localhost:8080](http://localhost:8080) in your browser.
 
-# Using Node http-server or npx (if installed)
-npx serve .
+#### Using Node.js:
+```bash
+npx serve C:\Users\a\.gemini\antigravity\scratch\vaultkey
 ```
 
 ---
 
-## 🎨 Color Palette & Design System
-- **Midnight Blue**: `#080D19`
-- **Royal Deep Purple**: `#111020`
-- **Cyber Cyan**: `#00F0FF`
-- **Cyber Emerald**: `#00FF9D`
-- **Electric Violet**: `#8A2BE2`
-- **Glassmorphism**: 16px backdrop blur with translucent borders (`rgba(255, 255, 255, 0.08)`)
+## 8. Keyboard Shortcuts
+
+- `Ctrl + L` / `Cmd + L` — Lock Vault immediately
+- `/` — Focus universal live search bar
+- `Escape` — Close active modal dialog
 
 ---
 
-## 📂 Project Structure
-```
-vault-key/
-├── index.html            # Main semantic markup, sections, modals
-├── README.md             # Documentation & cryptographic guide
-├── css/
-│   └── styles.css        # Cyberpunk & glassmorphism theme, layout & animations
-└── js/
-    ├── crypto-vault.js   # Web Crypto API zero-knowledge engine (PBKDF2 + AES-GCM)
-    ├── generator.js      # Password generation, entropy, and crack time analysis
-    ├── vault-3d.js       # Three.js 3D mechanical safe dial & animation
-    └── app.js            # App controller, audio FX, dashboard CRUD, TOTP simulator
-```
+## 9. Security Statement
+
+VaultKey uses standard cryptographic primitives provided directly by your operating system and browser engine through the W3C Web Crypto standard. No external tracking scripts, CDNs, or advertising beacons are loaded. All encryption keys remain exclusively on your device.

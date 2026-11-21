@@ -1,560 +1,1541 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VAULT KEY - Futuristic Zero-Knowledge Digital Fortress</title>
-  <meta name="description" content="Next-generation client-side encrypted password manager and digital vault. Powered by Web Crypto API AES-256-GCM, PBKDF2, and interactive 3D vault graphics.">
-
-  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <title>VaultKey – Secure Personal Password Manager</title>
+  <meta name="description" content="VaultKey is a zero-knowledge personal password manager utilizing client-side AES-256-GCM and PBKDF2 encryption.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Lucide Icons CDN -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Three.js CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-  <!-- Stylesheet -->
-  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Cyber Grid Overlay -->
-  <div class="bg-cyber-grid"></div>
-
-  <!-- ==========================================================================
-       Navigation Bar
-       ========================================================================== -->
-  <header>
-    <nav class="navbar">
-      <a href="#" class="nav-brand">
-        <div class="brand-icon">
-          <i data-lucide="shield-check"></i>
+  <!-- ================================================================= -->
+  <!-- 1. AUTHENTICATION & ONBOARDING SCREENS (SIGNUP, LOGIN, RECOVERY) -->
+  <!-- ================================================================= -->
+  <div id="auth-container" class="auth-container">
+    <div class="auth-card-wrapper">
+      
+      <!-- Logo & Brand Header -->
+      <div class="auth-brand">
+        <div class="brand-icon-glow">
+          <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            <circle cx="12" cy="16" r="1.5"></circle>
+            <path d="M12 17.5V19"></path>
+          </svg>
         </div>
-        <span>VAULT KEY</span>
-        <span class="brand-badge">256-GCM</span>
-      </a>
-
-      <ul class="nav-links">
-        <li><a href="#hero" class="nav-link" data-nav-target="hero"><i data-lucide="box"></i> 3D Vault</a></li>
-        <li><a href="#dashboard-section" class="nav-link" data-nav-target="dashboard-section"><i data-lucide="lock"></i> Vault Items</a></li>
-        <li><a href="#generator-section" class="nav-link" data-nav-target="generator-section"><i data-lucide="sparkles"></i> Generator</a></li>
-        <li><a href="#security-section" class="nav-link" data-nav-target="security-section"><i data-lucide="shield-alert"></i> 2FA & Audit</a></li>
-      </ul>
-
-      <div class="nav-actions">
-        <!-- Vault Status Indicator -->
-        <div class="status-pill" id="vault-status-indicator">
-          <span class="status-dot dot-locked"></span> Vault Locked
-        </div>
-
-        <!-- Sound FX Toggle -->
-        <button class="icon-toggle-btn" id="sound-toggle" title="Toggle Sound FX">
-          <i data-lucide="volume-2"></i>
-        </button>
-
-        <!-- Dynamic Unlock/Lock Buttons -->
-        <button class="btn btn-primary btn-sm" id="btn-unlock-vault">
-          <i data-lucide="unlock"></i> Unlock Vault
-        </button>
-        <button class="btn btn-danger btn-sm" id="btn-lock-vault" style="display: none;">
-          <i data-lucide="lock"></i> Lock Vault
-        </button>
-      </div>
-    </nav>
-  </header>
-
-  <!-- ==========================================================================
-       Hero Section with Interactive 3D Safe Dial
-       ========================================================================== -->
-  <section class="hero-section" id="hero">
-    <div class="hero-content">
-      <div class="hero-badge">
-        <i data-lucide="cpu"></i> Zero-Knowledge Client Architecture
-      </div>
-      <h1 class="hero-title">
-        Next-Gen <span class="gradient-text">Digital Fortress</span> For Passwords.
-      </h1>
-      <p class="hero-desc">
-        Store passwords, private seed phrases, and confidential notes inside an impenetrable client-side vault. Encrypted using military-grade AES-256-GCM and PBKDF2 with 100,000 iterations.
-      </p>
-
-      <div class="hero-cta-group">
-        <button class="btn btn-primary" id="btn-hero-launch">
-          <i data-lucide="key-round"></i> Open Vault
-        </button>
-        <a href="#generator-section" class="btn btn-secondary" data-nav-target="generator-section">
-          <i data-lucide="sparkles"></i> Password Generator
-        </a>
-      </div>
-
-      <!-- Security Specs Strip -->
-      <div class="security-metrics-strip">
-        <div class="metric-item">
-          <span class="metric-val"><i data-lucide="shield"></i> 256-Bit</span>
-          <span class="metric-label">AES-GCM Authenticated</span>
-        </div>
-        <div class="metric-item">
-          <span class="metric-val"><i data-lucide="hash"></i> 100,000</span>
-          <span class="metric-label">PBKDF2 SHA-256 Rounds</span>
-        </div>
-        <div class="metric-item">
-          <span class="metric-val"><i data-lucide="check-circle-2"></i> 100%</span>
-          <span class="metric-label">Local Zero-Knowledge</span>
+        <div class="brand-text">
+          <h1 class="brand-title">VaultKey</h1>
+          <span class="brand-subtitle">Zero-Knowledge Encrypted Password Manager</span>
         </div>
       </div>
-    </div>
 
-    <!-- 3D Vault Door Interactive Container -->
-    <div class="hero-3d-wrapper">
-      <div class="canvas-3d-box" id="vault-3d-canvas"></div>
-      <div class="canvas-overlay-ui">
-        <span class="canvas-tip"><i data-lucide="move"></i> Drag to rotate dial</span>
-        <button class="btn btn-secondary btn-sm" id="btn-3d-demo-unlock">
-          <i data-lucide="refresh-cw"></i> Cycle Mechanism
-        </button>
+      <!-- Security Badge -->
+      <div class="security-chip">
+        <svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          <path d="m9 12 2 2 4-4"></path>
+        </svg>
+        <span>End-to-End Client-Side AES-256-GCM • Web Crypto API</span>
       </div>
-    </div>
-  </section>
 
-  <!-- ==========================================================================
-       Vault Dashboard Section
-       ========================================================================== -->
-  <main class="main-wrapper" id="dashboard-section">
-    <div class="section-header">
-      <span class="section-badge">Encrypted Storage</span>
-      <h2 class="section-title">Your Secure Vault</h2>
-      <p class="section-subtitle">Zero-knowledge encrypted credentials decrypted on-the-fly in browser memory.</p>
-    </div>
-
-    <!-- Locked State Placeholder -->
-    <div class="vault-locked-banner" id="vault-locked-state">
-      <div class="locked-icon-shield">
-        <i data-lucide="lock" style="width: 36px; height: 36px;"></i>
-      </div>
-      <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem;">Vault is Currently Locked</h3>
-      <p style="color: var(--text-muted); max-width: 480px; margin-bottom: 1.8rem;">
-        Your credentials are fully encrypted with AES-256-GCM. Enter your master password to derive the decryption key in client memory.
-      </p>
-      <button class="btn btn-primary" onclick="window.vaultApp.openMasterModal()">
-        <i data-lucide="unlock"></i> Enter Master Password
-      </button>
-    </div>
-
-    <!-- Unlocked State Dashboard Grid -->
-    <div class="dashboard-unlocked-container" id="vault-unlocked-state" style="display: none;">
-      <div class="dashboard-layout">
-        <!-- Dashboard Sidebar -->
-        <aside class="dash-sidebar">
-          <div class="glass-panel" style="padding: 1.25rem;">
-            <ul class="sidebar-menu">
-              <li>
-                <button class="category-filter-btn active" data-category="all">
-                  <i data-lucide="layers"></i> All Credentials
-                </button>
-              </li>
-              <li>
-                <button class="category-filter-btn" data-category="logins">
-                  <i data-lucide="key-round"></i> Logins & Passwords
-                </button>
-              </li>
-              <li>
-                <button class="category-filter-btn" data-category="notes">
-                  <i data-lucide="file-text"></i> Secure Notes
-                </button>
-              </li>
-              <li>
-                <button class="category-filter-btn" data-category="cards">
-                  <i data-lucide="credit-card"></i> Payment Cards
-                </button>
-              </li>
-              <li>
-                <button class="category-filter-btn" data-category="api_keys">
-                  <i data-lucide="code-2"></i> API Keys & Tokens
-                </button>
-              </li>
-              <li>
-                <button class="category-filter-btn" data-category="favorites">
-                  <i data-lucide="star"></i> Favorites
-                </button>
-              </li>
-            </ul>
-
-            <div class="sidebar-divider"></div>
-
-            <!-- Health Audit Widget -->
-            <div class="audit-mini-card">
-              <div class="audit-mini-header">
-                <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Vault Health</span>
-                <span class="audit-score-pill" id="audit-score-number">95%</span>
-              </div>
-              <div class="audit-stat-row">
-                <span>Total Items</span>
-                <span class="audit-stat-val" id="audit-total-count">0</span>
-              </div>
-              <div class="audit-stat-row">
-                <span>Weak Passwords</span>
-                <span class="audit-stat-val" style="color: var(--accent-rose);" id="audit-weak-count">0</span>
-              </div>
-              <div class="audit-stat-row">
-                <span>Reused Passwords</span>
-                <span class="audit-stat-val" style="color: #F59E0B;" id="audit-reused-count">0</span>
-              </div>
-            </div>
-
-            <div class="sidebar-divider"></div>
-
-            <!-- Backup & Danger Controls -->
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <button class="btn btn-secondary btn-sm" id="btn-export-vault">
-                <i data-lucide="download"></i> Export Encrypted Backup
-              </button>
-              <button class="btn btn-secondary btn-sm" id="btn-import-vault">
-                <i data-lucide="upload"></i> Import Backup File
-              </button>
-              <input type="file" id="input-import-file" accept=".json" style="display: none;">
-              <button class="btn btn-danger btn-sm" id="btn-danger-reset" style="margin-top: 0.5rem;">
-                <i data-lucide="alert-triangle"></i> Wipe Vault Data
-              </button>
-            </div>
-          </div>
-        </aside>
-
-        <!-- Dashboard Main Panel -->
-        <section class="dash-content">
-          <!-- Toolbar -->
-          <div class="vault-toolbar">
-            <div class="search-box">
-              <i data-lucide="search"></i>
-              <input type="text" class="search-input" id="vault-search-input" placeholder="Search logins, websites, usernames, tags...">
-            </div>
-            <div class="toolbar-actions">
-              <span class="status-pill" id="vault-count-badge">0 items</span>
-              <button class="btn btn-primary" id="btn-add-item">
-                <i data-lucide="plus"></i> Add Item
-              </button>
-            </div>
-          </div>
-
-          <!-- Items Grid -->
-          <div class="vault-items-grid" id="vault-items-grid">
-            <!-- Dynamically populated by app.js -->
-          </div>
-        </section>
-      </div>
-    </div>
-  </main>
-
-  <!-- ==========================================================================
-       Password Generator Section
-       ========================================================================== -->
-  <section class="main-wrapper generator-section" id="generator-section">
-    <div class="section-header">
-      <span class="section-badge">Cryptographic Entropy</span>
-      <h2 class="section-title">Ultra-Strong Password Generator</h2>
-      <p class="section-subtitle">Generate cryptographically non-deterministic passwords with entropy & brute-force crack calculation.</p>
-    </div>
-
-    <div class="glass-panel">
-      <div class="generator-grid">
-        <!-- Generator Controls -->
-        <div>
-          <!-- Generated Output Field -->
-          <div class="gen-output-box">
-            <input type="text" class="gen-input font-mono" id="gen-output-field" readonly>
-            <div class="gen-output-actions">
-              <button class="copy-btn" id="btn-regenerate" title="Generate New">
-                <i data-lucide="refresh-cw"></i>
-              </button>
-              <button class="btn btn-primary btn-sm" id="btn-copy-gen">
-                <i data-lucide="copy"></i> Copy
-              </button>
-            </div>
-          </div>
-
-          <!-- Length Slider -->
-          <div class="slider-container">
-            <div class="slider-header">
-              <span class="slider-label">Password Length</span>
-              <span class="slider-val-badge" id="gen-length-val">20</span>
-            </div>
-            <input type="range" class="custom-range" id="gen-length-slider" min="8" max="64" value="20">
-          </div>
-
-          <!-- Checkbox Options -->
-          <div class="options-grid">
-            <label class="checkbox-card">
-              <input type="checkbox" id="gen-opt-upper" checked>
-              <span class="checkbox-label">Uppercase (A-Z)</span>
-            </label>
-            <label class="checkbox-card">
-              <input type="checkbox" id="gen-opt-lower" checked>
-              <span class="checkbox-label">Lowercase (a-z)</span>
-            </label>
-            <label class="checkbox-card">
-              <input type="checkbox" id="gen-opt-numbers" checked>
-              <span class="checkbox-label">Numbers (0-9)</span>
-            </label>
-            <label class="checkbox-card">
-              <input type="checkbox" id="gen-opt-symbols" checked>
-              <span class="checkbox-label">Symbols (!@#$%)</span>
-            </label>
-            <label class="checkbox-card" style="grid-column: 1 / -1;">
-              <input type="checkbox" id="gen-opt-ambiguous">
-              <span class="checkbox-label">Exclude Ambiguous Characters (l, 1, I, O, 0)</span>
-            </label>
-          </div>
+      <!-- ================= SIGN UP VIEW ================= -->
+      <div id="auth-signup-view" class="auth-view active">
+        <div class="auth-header">
+          <h2>Create Your Secure Vault</h2>
+          <p>Your master password is your only key. We never see or store it.</p>
         </div>
 
-        <!-- Real-Time Strength & Entropy Metrics -->
-        <div class="strength-analyzer-panel">
-          <div class="stat-box">
-            <div class="stat-box-title">Cryptographic Strength</div>
-            <div class="stat-box-val" id="gen-strength-label" style="color: var(--accent-emerald);">Military Grade (100%)</div>
-            <div class="strength-bar-track">
-              <div class="strength-bar-fill" id="gen-strength-fill" style="width: 100%; background: var(--accent-emerald);"></div>
-            </div>
-          </div>
-
-          <div class="stats-card-group">
-            <div class="stat-box">
-              <div class="stat-box-title">Shannon Entropy</div>
-              <div class="stat-box-val font-mono" id="gen-entropy-val">128.4 bits</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-box-title">Brute-Force Offline Attack</div>
-              <div class="stat-box-val" id="gen-crack-time" style="font-size: 1.1rem; color: var(--accent-cyan);">Trillions of centuries</div>
-            </div>
-          </div>
-
-          <!-- Live Custom Password Tester -->
-          <div class="stat-box">
-            <div class="stat-box-title">Audit Your Existing Password</div>
-            <input type="text" class="form-input font-mono" id="live-analyzer-input" placeholder="Type any password to test resilience..." style="margin-top: 0.5rem;">
-            <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.85rem;">
-              <span id="analyzer-label" style="color: var(--text-dim);">Awaiting input</span>
-              <span id="analyzer-crack-time" style="color: var(--accent-cyan);">—</span>
-              <span id="analyzer-entropy" class="font-mono" style="color: var(--text-dim);">—</span>
-            </div>
-            <div class="strength-bar-track" style="margin-top: 0.3rem;">
-              <div class="strength-bar-fill" id="analyzer-bar" style="width: 0%;"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ==========================================================================
-       2FA Authenticator Simulator & Zero-Knowledge Specs
-       ========================================================================== -->
-  <section class="main-wrapper security-specs-section" id="security-section">
-    <div class="section-header">
-      <span class="section-badge">Multi-Factor Armor</span>
-      <h2 class="section-title">2FA Authenticator & Architecture</h2>
-      <p class="section-subtitle">Simulated Time-Based One-Time Passwords (TOTP) and zero-knowledge protocol overview.</p>
-    </div>
-
-    <div class="specs-grid">
-      <!-- 2FA TOTP Card -->
-      <div class="glass-panel">
-        <div class="totp-container">
-          <div class="totp-header">
-            <div>
-              <h3 style="font-size: 1.25rem;">Live 2FA Authenticator</h3>
-              <p style="font-size: 0.85rem; color: var(--text-muted);">Rotating 30-second cryptographic tokens</p>
-            </div>
-            <div class="totp-countdown-widget">
-              <span class="font-mono" id="totp-timer-number" style="font-weight: 700; color: var(--accent-cyan);">30</span>
-              <svg class="circular-timer-svg" viewBox="0 0 36 36">
-                <circle class="circular-timer-bg" cx="18" cy="18" r="14" />
-                <circle class="circular-timer-progress" id="totp-timer-circle" cx="18" cy="18" r="14" />
+        <form id="signup-form" class="auth-form" autocomplete="off">
+          <div class="form-group">
+            <label for="signup-email">Account Email or Identifier</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
               </svg>
+              <input type="email" id="signup-email" placeholder="you@example.com" required>
             </div>
           </div>
 
-          <div class="totp-list" id="totp-codes-list">
-            <!-- Rendered by app.js -->
-          </div>
-        </div>
-      </div>
-
-      <!-- Zero-Knowledge Security Specs -->
-      <div class="glass-panel" style="display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">The Zero-Knowledge Standard</h3>
-          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">
-            How Vault Key ensures mathematical isolation from external breaches or compromised networks:
-          </p>
-
-          <div style="display: flex; flex-direction: column; gap: 1rem;">
-            <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
-              <div style="background: rgba(0, 240, 255, 0.15); color: var(--accent-cyan); padding: 8px; border-radius: 8px;">
-                <i data-lucide="cpu"></i>
-              </div>
-              <div>
-                <h4 style="font-size: 0.95rem; font-weight: 700;">Client-Side Derivation</h4>
-                <p style="font-size: 0.825rem; color: var(--text-dim);">Keys are derived locally via PBKDF2 with a unique 16-byte cryptographically random salt.</p>
-              </div>
+          <div class="form-group">
+            <div class="label-with-hint">
+              <label for="signup-password">Master Password</label>
+              <span class="hint-badge">Must be strong</span>
             </div>
-
-            <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
-              <div style="background: rgba(0, 255, 157, 0.15); color: var(--accent-emerald); padding: 8px; border-radius: 8px;">
-                <i data-lucide="shield-check"></i>
-              </div>
-              <div>
-                <h4 style="font-size: 0.95rem; font-weight: 700;">AES-256-GCM Authenticated Encryption</h4>
-                <p style="font-size: 0.825rem; color: var(--text-dim);">Galois/Counter Mode guarantees confidentiality and data integrity with a fresh 12-byte IV for every write.</p>
-              </div>
+            <div class="input-wrapper">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <input type="password" id="signup-password" placeholder="Create a strong master passphrase" required minlength="10">
+              <button type="button" class="btn-input-action" data-toggle-pass="signup-password" title="Show/Hide Password" aria-label="Toggle password visibility">
+                <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
             </div>
-
-            <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
-              <div style="background: rgba(138, 43, 226, 0.15); color: var(--accent-purple); padding: 8px; border-radius: 8px;">
-                <i data-lucide="eye-off"></i>
+            
+            <!-- Realtime Strength Meter -->
+            <div class="password-meter-container">
+              <div class="strength-track">
+                <div id="signup-strength-bar" class="strength-fill" style="width: 0%"></div>
               </div>
-              <div>
-                <h4 style="font-size: 0.95rem; font-weight: 700;">Ephemeral Memory Disposal</h4>
-                <p style="font-size: 0.825rem; color: var(--text-dim);">When locked or idle for 5 minutes, encryption keys and plaintexts are zeroed out from memory.</p>
+              <div class="strength-meta">
+                <span id="signup-strength-text" class="strength-label">Enter at least 10 characters</span>
+                <span id="signup-strength-entropy" class="entropy-label">0 bits entropy</span>
               </div>
             </div>
           </div>
-        </div>
 
-        <div style="padding-top: 1.5rem; border-top: 1px solid var(--border-glass); margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-          <span style="font-size: 0.85rem; color: var(--text-dim);">Ready to secure your credentials?</span>
-          <button class="btn btn-primary btn-sm" onclick="window.vaultApp.openMasterModal()">
-            Launch Vault
+          <div class="form-group">
+            <label for="signup-confirm">Confirm Master Password</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              <input type="password" id="signup-confirm" placeholder="Re-enter your master passphrase" required minlength="10">
+              <button type="button" class="btn-input-action" data-toggle-pass="signup-confirm" title="Show/Hide Password" aria-label="Toggle password visibility">
+                <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Demo Vault Checkbox Option -->
+          <div class="checkbox-group">
+            <label class="custom-checkbox-label">
+              <input type="checkbox" id="signup-load-sample" checked>
+              <span class="checkbox-box"></span>
+              <span class="checkbox-text">Populate with sample encrypted records (Netflix, Bank, GitHub, Wi-Fi) to test dashboard immediately</span>
+            </label>
+          </div>
+
+          <!-- Warning Notice -->
+          <div class="security-warning-box">
+            <svg class="warning-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <p><strong>Zero-Knowledge Notice:</strong> There is no "Forgot Password" link to email you. Your data is encrypted locally using PBKDF2 + AES-GCM. An Emergency Recovery Key will be generated next.</p>
+          </div>
+
+          <button type="submit" id="btn-create-vault" class="btn btn-primary btn-block btn-lg">
+            <span>Create Encrypted Vault</span>
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
           </button>
+        </form>
+
+        <div class="auth-footer">
+          <span>Already have a vault configured?</span>
+          <button type="button" class="btn-link" id="link-goto-login">Unlock Existing Vault</button>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- ==========================================================================
-       Master Key Auth Modal
-       ========================================================================== -->
-  <div class="modal-overlay" id="master-auth-modal">
-    <div class="modal-window">
-      <div class="modal-header">
-        <div>
-          <h3 class="modal-title" id="master-modal-title">Unlock Digital Vault</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;" id="master-modal-desc">
-            Enter your Master Password to derive the AES-256-GCM encryption key.
-          </p>
+      <!-- ================= LOGIN / UNLOCK VIEW ================= -->
+      <div id="auth-login-view" class="auth-view">
+        <div class="auth-header">
+          <h2>Unlock Your Vault</h2>
+          <p id="login-user-identifier">Enter your master password to decrypt your credentials.</p>
         </div>
-        <button class="modal-close-btn" data-close-modal="master-auth-modal">
-          <i data-lucide="x"></i>
-        </button>
+
+        <form id="login-form" class="auth-form" autocomplete="off">
+          <div class="form-group">
+            <label for="login-password">Master Password</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <input type="password" id="login-password" placeholder="Enter master password" required autofocus>
+              <button type="button" class="btn-input-action" data-toggle-pass="login-password" title="Show/Hide Password" aria-label="Toggle password visibility">
+                <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="auth-action-row">
+            <button type="button" class="btn-link text-sm" id="link-goto-recovery">Forgot master password? Use Recovery Key</button>
+          </div>
+
+          <button type="submit" id="btn-unlock-vault" class="btn btn-primary btn-block btn-lg">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+            </svg>
+            <span>Decrypt & Open Vault</span>
+          </button>
+        </form>
+
+        <div class="auth-footer">
+          <span>Need to start fresh or configure a new vault?</span>
+          <button type="button" class="btn-link" id="link-goto-signup">Setup New Vault</button>
+        </div>
       </div>
 
-      <form id="master-auth-form">
-        <div class="form-group">
-          <label class="form-label" for="master-password-input">Master Password</label>
-          <input type="password" class="form-input font-mono" id="master-password-input" placeholder="Enter master key..." required autocomplete="current-password">
+      <!-- ================= RECOVERY KEY VIEW ================= -->
+      <div id="auth-recovery-view" class="auth-view">
+        <div class="auth-header">
+          <h2>Cryptographic Recovery</h2>
+          <p>Enter your 32-character Emergency Recovery Key provided when you set up VaultKey.</p>
         </div>
 
-        <div class="form-group" id="master-confirm-group" style="display: none;">
-          <label class="form-label" for="master-confirm-input">Confirm Master Password</label>
-          <input type="password" class="form-input font-mono" id="master-confirm-input" placeholder="Confirm master key..." autocomplete="new-password">
-        </div>
+        <form id="recovery-form" class="auth-form" autocomplete="off">
+          <div class="form-group">
+            <label for="recovery-key-input">Emergency Recovery Key</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="7.5" cy="15.5" r="5.5"></circle>
+                <path d="m21 2-9.6 9.6"></path>
+                <path d="m15.5 7.5 3 3L22 7l-3-3"></path>
+              </svg>
+              <input type="text" id="recovery-key-input" class="font-mono text-uppercase" placeholder="VK-XXXX-XXXX-XXXX-XXXX" required>
+            </div>
+            <p class="field-help">Formatted in groups of 4 or continuous alphanumeric characters.</p>
+          </div>
 
-        <div class="form-error-msg" id="master-auth-error"></div>
+          <div class="form-group">
+            <label for="recovery-new-password">New Master Password</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <input type="password" id="recovery-new-password" placeholder="Create new master password" required minlength="10">
+            </div>
+          </div>
 
-        <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.8rem;">
-          <button type="button" class="btn btn-secondary" data-close-modal="master-auth-modal">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="master-submit-btn">Unlock Vault</button>
+          <button type="submit" class="btn btn-primary btn-block btn-lg">
+            <span>Restore & Set New Master Password</span>
+          </button>
+        </form>
+
+        <div class="auth-footer">
+          <button type="button" class="btn-link" id="link-recovery-back">Back to Master Password Login</button>
         </div>
-      </form>
+      </div>
+
     </div>
   </div>
 
-  <!-- ==========================================================================
-       Add / Edit Vault Item Modal
-       ========================================================================== -->
-  <div class="modal-overlay" id="vault-item-modal">
-    <div class="modal-window">
+
+  <!-- ================================================================= -->
+  <!-- 2. EMERGENCY KIT ONBOARDING MODAL                                 -->
+  <!-- ================================================================= -->
+  <div id="emergency-kit-modal" class="modal-backdrop">
+    <div class="modal-card modal-lg">
       <div class="modal-header">
-        <h3 class="modal-title" id="item-modal-title">Add To Secure Vault</h3>
-        <button class="modal-close-btn" data-close-modal="vault-item-modal">
-          <i data-lucide="x"></i>
-        </button>
+        <div class="modal-title-with-icon">
+          <div class="icon-bubble purple">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </div>
+          <div>
+            <h3>Save Your VaultKey Emergency Kit</h3>
+            <p class="text-muted">This is your only fail-safe. Store it securely offline.</p>
+          </div>
+        </div>
       </div>
 
-      <form id="vault-item-form">
-        <div class="form-group">
-          <label class="form-label" for="item-title-input">Title / Label *</label>
-          <input type="text" class="form-input" id="item-title-input" placeholder="e.g. GitHub Production or Personal Email" required>
+      <div class="modal-body">
+        <div class="kit-instructions">
+          <p>Because VaultKey is built with <strong>zero-knowledge architecture</strong>, your data cannot be decrypted by anyone without your master password or this emergency recovery key.</p>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="item-category-select">Category</label>
-          <select class="form-select" id="item-category-select">
-            <option value="logins">Login & Password</option>
-            <option value="notes">Secure Note / Seed Phrase</option>
-            <option value="cards">Payment / Credit Card</option>
-            <option value="api_keys">API Key / Token</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="item-username-input">Account / Username / Email</label>
-          <input type="text" class="form-input font-mono" id="item-username-input" placeholder="e.g. user@domain.com">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="item-password-input">Password / Secret Key</label>
-          <div class="input-with-button">
-            <input type="text" class="form-input font-mono" id="item-password-input" placeholder="Enter password or generate">
-            <button type="button" class="btn btn-secondary btn-sm" id="btn-modal-generate" title="Generate 20-char password">
-              <i data-lucide="sparkles"></i>
+        <div class="emergency-key-display">
+          <div class="key-label">YOUR CRYPTOGRAPHIC RECOVERY KEY</div>
+          <div class="key-box">
+            <code id="display-recovery-key" class="font-mono">VK-XXXX-XXXX-XXXX-XXXX</code>
+            <button type="button" class="btn btn-sm btn-ghost" id="btn-copy-recovery-key" title="Copy Key">
+              <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span>Copy</span>
             </button>
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="item-url-input">Website URL</label>
-          <input type="url" class="form-input" id="item-url-input" placeholder="https://example.com">
+        <div class="kit-actions-row">
+          <button type="button" id="btn-download-emergency-kit" class="btn btn-outline btn-block">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Download Emergency Kit Document (.html)</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <label class="custom-checkbox-label">
+          <input type="checkbox" id="check-confirm-kit-saved">
+          <span class="checkbox-box"></span>
+          <span class="checkbox-text">I have downloaded or written down my Emergency Recovery Key.</span>
+        </label>
+        <button type="button" id="btn-finish-onboarding" class="btn btn-primary" disabled>
+          <span>Continue to Vault Dashboard</span>
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================================================================= -->
+  <!-- 3. MAIN APPLICATION INTERFACE (DASHBOARD & VAULT)                 -->
+  <!-- ================================================================= -->
+  <div id="app-layout" class="app-layout hidden">
+    
+    <!-- SIDEBAR NAVIGATION -->
+    <aside id="app-sidebar" class="app-sidebar">
+      <!-- Sidebar Brand -->
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <div class="brand-icon-mini">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </div>
+          <div class="brand-info">
+            <span class="brand-name">VaultKey</span>
+            <span class="brand-badge-pill">AES-256</span>
+          </div>
+        </div>
+        <button type="button" class="btn-icon-mobile-close" id="btn-close-sidebar" aria-label="Close Sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Quick Add Button in Sidebar -->
+      <div class="sidebar-action-box">
+        <button type="button" class="btn btn-primary btn-block btn-new-item" id="btn-sidebar-add-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>New Vault Item</span>
+        </button>
+      </div>
+
+      <!-- Nav Menu Links -->
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">CORE</div>
+        
+        <button type="button" class="nav-item active" data-nav="dashboard">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="9"></rect>
+            <rect x="14" y="3" width="7" height="5"></rect>
+            <rect x="14" y="12" width="7" height="9"></rect>
+            <rect x="3" y="16" width="7" height="5"></rect>
+          </svg>
+          <span>Dashboard</span>
+        </button>
+
+        <button type="button" class="nav-item" data-nav="vault">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>All Items</span>
+          <span class="nav-badge" id="badge-total-items">0</span>
+        </button>
+
+        <button type="button" class="nav-item" data-nav="favorites">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          <span>Favorites</span>
+          <span class="nav-badge" id="badge-favorite-items">0</span>
+        </button>
+
+        <button type="button" class="nav-item" data-nav="notes">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          <span>Secure Notes</span>
+          <span class="nav-badge" id="badge-note-items">0</span>
+        </button>
+
+        <button type="button" class="nav-item" data-nav="generator">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="16 3 21 3 21 8"></polyline>
+            <line x1="4" y1="20" x2="21" y2="3"></line>
+            <polyline points="21 16 21 21 16 21"></polyline>
+            <line x1="15" y1="15" x2="21" y2="21"></line>
+            <line x1="4" y1="4" x2="9" y2="9"></line>
+          </svg>
+          <span>Password Generator</span>
+        </button>
+
+        <button type="button" class="nav-item" data-nav="audit">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <path d="m9 12 2 2 4-4"></path>
+          </svg>
+          <span>Security Health</span>
+          <span class="nav-badge badge-warning" id="badge-weak-items">0</span>
+        </button>
+
+        <div class="nav-section-title">CATEGORIES</div>
+        <div class="category-nav-list" id="sidebar-category-list">
+          <!-- Dynamically populated or static categories -->
+          <button type="button" class="nav-item category-item" data-category="Social Media">
+            <span class="cat-dot dot-social"></span>
+            <span>Social Media</span>
+          </button>
+          <button type="button" class="nav-item category-item" data-category="Email">
+            <span class="cat-dot dot-email"></span>
+            <span>Email</span>
+          </button>
+          <button type="button" class="nav-item category-item" data-category="Banking">
+            <span class="cat-dot dot-banking"></span>
+            <span>Banking</span>
+          </button>
+          <button type="button" class="nav-item category-item" data-category="Shopping">
+            <span class="cat-dot dot-shopping"></span>
+            <span>Shopping</span>
+          </button>
+          <button type="button" class="nav-item category-item" data-category="Education">
+            <span class="cat-dot dot-education"></span>
+            <span>Education</span>
+          </button>
+          <button type="button" class="nav-item category-item" data-category="Entertainment">
+            <span class="cat-dot dot-entertainment"></span>
+            <span>Entertainment</span>
+          </button>
+          <button type="button" class="nav-item category-item" data-category="Wi-Fi">
+            <span class="cat-dot dot-wifi"></span>
+            <span>Wi-Fi</span>
+          </button>
+          <button type="button" class="nav-item category-item" data-category="Other">
+            <span class="cat-dot dot-other"></span>
+            <span>Other</span>
+          </button>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="item-notes-input">Confidential Notes</label>
-          <textarea class="form-textarea" id="item-notes-input" placeholder="Additional recovery codes, security questions, notes..."></textarea>
+        <div class="nav-section-title">MANAGEMENT</div>
+        <button type="button" class="nav-item" data-nav="settings">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          <span>Settings</span>
+        </button>
+      </nav>
+
+      <!-- Sidebar User & Lock Footer -->
+      <div class="sidebar-footer">
+        <div class="user-status-card">
+          <div class="user-avatar-dot"></div>
+          <div class="user-info-text">
+            <span class="user-email-display" id="sidebar-user-email">user@vaultkey.local</span>
+            <span class="user-session-state">Unlocked &bull; In-Memory Key</span>
+          </div>
+        </div>
+        <button type="button" class="btn btn-sm btn-lock-vault" id="btn-sidebar-lock" title="Lock Vault Immediately (Ctrl+L)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>Lock Vault</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="app-main">
+      
+      <!-- TOP NAVIGATION BAR -->
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <!-- Mobile Menu Hamburger -->
+          <button type="button" class="btn-icon mobile-menu-toggle" id="btn-toggle-sidebar" aria-label="Toggle Navigation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          
+          <!-- Universal Live Search Bar -->
+          <div class="topbar-search">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="global-search-input" placeholder="Search passwords, accounts, URLs, tags... (Press /)" autocomplete="off">
+            <button type="button" id="btn-clear-search" class="btn-clear hidden" title="Clear Search">&times;</button>
+          </div>
         </div>
 
-        <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.8rem;">
-          <button type="button" class="btn btn-secondary" data-close-modal="vault-item-modal">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="btn-save-item">Save In Vault</button>
+        <div class="topbar-right">
+          <!-- Auto-lock countdown chip -->
+          <div class="timer-chip" id="auto-lock-chip" title="Auto-locks on user inactivity">
+            <svg class="chip-clock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span id="auto-lock-timer-text">05:00</span>
+          </div>
+
+          <!-- Quick Generator Modal Button -->
+          <button type="button" class="btn-icon" id="btn-topbar-generator" title="Generate Password">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16 3 21 3 21 8"></polyline>
+              <line x1="4" y1="20" x2="21" y2="3"></line>
+              <polyline points="21 16 21 21 16 21"></polyline>
+              <line x1="15" y1="15" x2="21" y2="21"></line>
+              <line x1="4" y1="4" x2="9" y2="9"></line>
+            </svg>
+          </button>
+
+          <!-- Light / Dark Mode Toggle -->
+          <button type="button" class="btn-icon" id="btn-theme-toggle" title="Toggle Light / Dark Mode" aria-label="Toggle theme">
+            <!-- Sun icon (for dark mode) -->
+            <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <!-- Moon icon (for light mode) -->
+            <svg class="theme-icon-moon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+
+          <!-- Topbar Lock Button -->
+          <button type="button" class="btn btn-outline btn-sm" id="btn-topbar-lock">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <span>Lock</span>
+          </button>
+
+          <!-- Primary + Add Item Button -->
+          <button type="button" class="btn btn-primary btn-sm btn-new-item" id="btn-topbar-add-item">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Add Item</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- DYNAMIC TAB PANELS -->
+      <div class="content-scrollable">
+
+        <!-- ================= VIEW 1: DASHBOARD ================= -->
+        <section id="view-dashboard" class="view-panel active">
+          <!-- Welcome & Zero-Knowledge Banner -->
+          <div class="dashboard-hero">
+            <div class="hero-text">
+              <h2>Security Dashboard</h2>
+              <p>Your vault is active and encrypted with <strong>AES-256-GCM</strong>. Passwords never touch the network unencrypted.</p>
+            </div>
+            <div class="hero-actions">
+              <button type="button" class="btn btn-outline" id="btn-hero-audit">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <span>Audit Vault Health</span>
+              </button>
+              <button type="button" class="btn btn-primary" id="btn-hero-add">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span>Add Password</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Metric Cards Grid -->
+          <div class="metric-grid">
+            <div class="metric-card" data-nav-target="vault">
+              <div class="metric-icon-box purple">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+              <div class="metric-data">
+                <span class="metric-label">Total Saved Items</span>
+                <span class="metric-value" id="dash-metric-total">0</span>
+              </div>
+            </div>
+
+            <div class="metric-card" data-nav-target="favorites">
+              <div class="metric-icon-box gold">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+              </div>
+              <div class="metric-data">
+                <span class="metric-label">Favorites</span>
+                <span class="metric-value" id="dash-metric-favorites">0</span>
+              </div>
+            </div>
+
+            <div class="metric-card" data-nav-target="notes">
+              <div class="metric-icon-box blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                </svg>
+              </div>
+              <div class="metric-data">
+                <span class="metric-label">Secure Notes</span>
+                <span class="metric-value" id="dash-metric-notes">0</span>
+              </div>
+            </div>
+
+            <div class="metric-card" data-nav-target="audit">
+              <div class="metric-icon-box emerald">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                  <path d="m9 12 2 2 4-4"></path>
+                </svg>
+              </div>
+              <div class="metric-data">
+                <span class="metric-label">Security Score</span>
+                <span class="metric-value" id="dash-metric-score">100%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Security Warnings & Overview Cards -->
+          <div class="dashboard-split-grid">
+            
+            <!-- Left: Security Health Overview Banner -->
+            <div class="card security-status-card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">Vault Security Health</h3>
+                  <p class="card-subtitle">Real-time analysis of password entropy, reuse, and strength</p>
+                </div>
+                <span class="status-indicator-badge badge-success" id="dash-health-badge">Optimal</span>
+              </div>
+              
+              <div class="card-body">
+                <div class="score-bar-wrapper">
+                  <div class="score-bar-track">
+                    <div id="dash-score-progress" class="score-bar-fill" style="width: 100%"></div>
+                  </div>
+                </div>
+
+                <div class="health-breakdown-list">
+                  <div class="health-item clickable" id="filter-weak-click">
+                    <div class="health-info">
+                      <span class="indicator-dot dot-red"></span>
+                      <span>Weak Passwords (&lt; 12 chars or low entropy)</span>
+                    </div>
+                    <span class="health-count count-danger" id="dash-count-weak">0</span>
+                  </div>
+
+                  <div class="health-item clickable" id="filter-reused-click">
+                    <div class="health-info">
+                      <span class="indicator-dot dot-orange"></span>
+                      <span>Reused Passwords (cross-site vulnerability)</span>
+                    </div>
+                    <span class="health-count count-warning" id="dash-count-reused">0</span>
+                  </div>
+
+                  <div class="health-item">
+                    <div class="health-info">
+                      <span class="indicator-dot dot-green"></span>
+                      <span>Strong & Unique Passwords</span>
+                    </div>
+                    <span class="health-count count-success" id="dash-count-strong">0</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Quick Generator Mini Card -->
+            <div class="card quick-gen-card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">Quick Password Generator</h3>
+                  <p class="card-subtitle">Instant cryptographically secure random password</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="quick-pass-box">
+                  <input type="text" id="quick-gen-output" class="font-mono" readonly value="Loading...">
+                  <div class="quick-gen-btn-group">
+                    <button type="button" class="btn-icon-subtle" id="btn-quick-refresh" title="Regenerate Password">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <polyline points="1 20 1 14 7 14"></polyline>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                      </svg>
+                    </button>
+                    <button type="button" class="btn-icon-subtle" id="btn-quick-copy" title="Copy to Clipboard">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="quick-slider-wrapper">
+                  <label for="quick-gen-slider">Length: <span id="quick-gen-len-label">16</span></label>
+                  <input type="range" id="quick-gen-slider" min="8" max="64" value="16">
+                </div>
+                <button type="button" class="btn btn-outline btn-block btn-sm" id="btn-goto-full-gen">
+                  Open Advanced Generator &rarr;
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Recently Added / Modified Passwords -->
+          <div class="card dashboard-recent-card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Recent Vault Items</h3>
+                <p class="card-subtitle">Recently created or updated encrypted credentials</p>
+              </div>
+              <button type="button" class="btn-link" id="link-view-all-vault">View All Items &rarr;</button>
+            </div>
+            <div class="card-body no-padding">
+              <div class="items-table-container">
+                <table class="items-table">
+                  <thead>
+                    <tr>
+                      <th>Title & Website</th>
+                      <th>Category</th>
+                      <th>Username / Email</th>
+                      <th>Password</th>
+                      <th>Updated</th>
+                      <th class="text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dash-recent-tbody">
+                    <!-- Populated by JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ================= VIEW 2: ALL ITEMS / VAULT ================= -->
+        <section id="view-vault" class="view-panel">
+          <div class="view-header-row">
+            <div>
+              <h2 id="vault-view-title">All Vault Items</h2>
+              <p class="text-muted" id="vault-view-description">Browse, search, edit, and organize all stored credentials.</p>
+            </div>
+            
+            <div class="view-controls">
+              <!-- Filter Dropdown -->
+              <select id="select-category-filter" class="form-select">
+                <option value="ALL">All Categories</option>
+                <option value="Social Media">Social Media</option>
+                <option value="Email">Email</option>
+                <option value="Banking">Banking</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Education">Education</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Wi-Fi">Wi-Fi</option>
+                <option value="Other">Other</option>
+              </select>
+
+              <!-- Sort Dropdown -->
+              <select id="select-sort-filter" class="form-select">
+                <option value="updated-desc">Recently Updated</option>
+                <option value="created-desc">Date Created</option>
+                <option value="title-asc">Title (A - Z)</option>
+                <option value="title-desc">Title (Z - A)</option>
+              </select>
+
+              <!-- View Layout Toggle (Grid vs Table) -->
+              <div class="layout-toggle-group">
+                <button type="button" class="btn-icon-toggle active" id="btn-toggle-grid" title="Grid View">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                  </svg>
+                </button>
+                <button type="button" class="btn-icon-toggle" id="btn-toggle-table" title="Table View">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Add New Item -->
+              <button type="button" class="btn btn-primary btn-new-item">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span>Add Item</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Active Filter Pill Bar (e.g., category: Banking, or weak passwords filter) -->
+          <div id="active-filter-chips" class="filter-chips-container hidden">
+            <span class="filter-chip">
+              <span id="active-filter-name">Category: Banking</span>
+              <button type="button" id="btn-remove-filter">&times;</button>
+            </span>
+          </div>
+
+          <!-- Items Container (Grid or Table) -->
+          <div id="vault-items-container" class="vault-items-grid">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- Empty State -->
+          <div id="vault-empty-state" class="empty-state-card hidden">
+            <div class="empty-icon-circle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <h3 id="empty-state-title">No items found</h3>
+            <p id="empty-state-desc">Your vault is clean or no items match your active filters.</p>
+            <button type="button" class="btn btn-primary btn-new-item">Add New Item</button>
+          </div>
+        </section>
+
+
+        <!-- ================= VIEW 3: SECURE NOTES ================= -->
+        <section id="view-notes" class="view-panel">
+          <div class="view-header-row">
+            <div>
+              <h2>End-to-End Encrypted Notes</h2>
+              <p class="text-muted">Securely store recovery seeds, API tokens, license keys, and sensitive memos.</p>
+            </div>
+            <button type="button" class="btn btn-primary" id="btn-add-note">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span>New Secure Note</span>
+            </button>
+          </div>
+
+          <div id="notes-grid-container" class="notes-grid">
+            <!-- Populated dynamically -->
+          </div>
+        </section>
+
+
+        <!-- ================= VIEW 4: ADVANCED PASSWORD GENERATOR ================= -->
+        <section id="view-generator" class="view-panel">
+          <div class="view-header-row">
+            <div>
+              <h2>Cryptographic Password Generator</h2>
+              <p class="text-muted">Generates uncrackable passwords using Web Crypto API's cryptographically secure pseudo-random number generator (CSPRNG).</p>
+            </div>
+          </div>
+
+          <div class="generator-card-layout">
+            
+            <div class="card gen-main-card">
+              <!-- Password Display Box -->
+              <div class="gen-display-wrapper">
+                <div class="gen-output-text font-mono" id="full-gen-output">Select options and generate</div>
+                <div class="gen-output-actions">
+                  <button type="button" class="btn btn-outline btn-sm" id="btn-full-gen-refresh" title="Regenerate">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="23 4 23 10 17 10"></polyline>
+                      <polyline points="1 20 1 14 7 14"></polyline>
+                      <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                    </svg>
+                    <span>Regenerate</span>
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" id="btn-full-gen-copy">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Copy Password</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Password Strength & Crack Time Gauge -->
+              <div class="gen-stats-row">
+                <div class="stat-pill">
+                  <span class="stat-title">Strength:</span>
+                  <span class="stat-val font-bold text-success" id="gen-strength-label">Very Strong</span>
+                </div>
+                <div class="stat-pill">
+                  <span class="stat-title">Entropy:</span>
+                  <span class="stat-val font-mono" id="gen-entropy-label">98 bits</span>
+                </div>
+                <div class="stat-pill">
+                  <span class="stat-title">Estimated Crack Time:</span>
+                  <span class="stat-val font-mono" id="gen-crack-time">100+ Trillion Years</span>
+                </div>
+              </div>
+
+              <!-- Controls Section -->
+              <div class="gen-controls-body">
+                <!-- Length Slider -->
+                <div class="control-group">
+                  <div class="slider-header">
+                    <label for="full-gen-slider">Password Length</label>
+                    <span class="slider-val-badge font-mono" id="full-gen-slider-val">20 characters</span>
+                  </div>
+                  <input type="range" id="full-gen-slider" min="8" max="64" value="20" class="styled-range">
+                  <div class="slider-limits">
+                    <span>8 (Min)</span>
+                    <span>32</span>
+                    <span>64 (Max)</span>
+                  </div>
+                </div>
+
+                <!-- Character Types Checkboxes -->
+                <div class="char-options-grid">
+                  <label class="custom-checkbox-label">
+                    <input type="checkbox" id="gen-opt-upper" checked>
+                    <span class="checkbox-box"></span>
+                    <span class="checkbox-text">Uppercase Letters (A-Z)</span>
+                  </label>
+
+                  <label class="custom-checkbox-label">
+                    <input type="checkbox" id="gen-opt-lower" checked>
+                    <span class="checkbox-box"></span>
+                    <span class="checkbox-text">Lowercase Letters (a-z)</span>
+                  </label>
+
+                  <label class="custom-checkbox-label">
+                    <input type="checkbox" id="gen-opt-numbers" checked>
+                    <span class="checkbox-box"></span>
+                    <span class="checkbox-text">Numbers (0-9)</span>
+                  </label>
+
+                  <label class="custom-checkbox-label">
+                    <input type="checkbox" id="gen-opt-symbols" checked>
+                    <span class="checkbox-box"></span>
+                    <span class="checkbox-text">Special Symbols (!@#$%^&amp;*)</span>
+                  </label>
+
+                  <label class="custom-checkbox-label">
+                    <input type="checkbox" id="gen-opt-ambiguous">
+                    <span class="checkbox-box"></span>
+                    <span class="checkbox-text">Avoid Ambiguous (1, l, I, 0, O)</span>
+                  </label>
+                </div>
+
+                <!-- Preset Quick Buttons -->
+                <div class="presets-row">
+                  <span class="preset-label">Presets:</span>
+                  <button type="button" class="btn btn-xs btn-outline" id="preset-pin">PIN (6-Digit)</button>
+                  <button type="button" class="btn btn-xs btn-outline" id="preset-standard">Balanced (16-Char)</button>
+                  <button type="button" class="btn btn-xs btn-outline" id="preset-strong">Strong (24-Char)</button>
+                  <button type="button" class="btn btn-xs btn-outline" id="preset-paranoid">Max Defense (64-Char)</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Security Tips Sidebar -->
+            <div class="card gen-info-card">
+              <h3 class="card-title">Cryptographic Standard</h3>
+              <p class="text-sm">VaultKey generates entropy strictly using <code>crypto.getRandomValues()</code> from the Web Crypto API, resisting predictability and quantum dictionary attacks.</p>
+              
+              <div class="info-checklist">
+                <div class="info-check-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>Never reuse passwords across financial and social accounts.</span>
+                </div>
+                <div class="info-check-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>Minimum 16 characters recommended for modern resilience.</span>
+                </div>
+                <div class="info-check-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>All generated passwords stay in local RAM until you choose to save.</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+
+        <!-- ================= VIEW 5: SECURITY HEALTH & AUDIT ================= -->
+        <section id="view-audit" class="view-panel">
+          <div class="view-header-row">
+            <div>
+              <h2>Vault Security Health &amp; Vulnerability Audit</h2>
+              <p class="text-muted">Deep inspection for weak passwords, reused credentials, and at-risk accounts.</p>
+            </div>
+            <button type="button" class="btn btn-outline" id="btn-refresh-audit">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <polyline points="1 20 1 14 7 14"></polyline>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+              </svg>
+              <span>Re-Scan Vault</span>
+            </button>
+          </div>
+
+          <!-- Audit Metrics Row -->
+          <div class="audit-summary-grid">
+            <div class="audit-summary-card score-large-card">
+              <span class="audit-score-number" id="audit-big-score">100</span>
+              <span class="audit-score-suffix">/ 100</span>
+              <p class="audit-score-desc" id="audit-score-verdict">All passwords meet strong cryptographic criteria.</p>
+            </div>
+
+            <div class="audit-summary-card">
+              <div class="audit-pill danger">Critical</div>
+              <span class="audit-metric-num" id="audit-num-weak">0</span>
+              <span class="audit-metric-title">Weak Passwords</span>
+              <p class="text-xs text-muted">Less than 12 characters or simple dictionary patterns</p>
+            </div>
+
+            <div class="audit-summary-card">
+              <div class="audit-pill warning">High Risk</div>
+              <span class="audit-metric-num" id="audit-num-reused">0</span>
+              <span class="audit-metric-title">Reused Passwords</span>
+              <p class="text-xs text-muted">Breach of one account exposes the other</p>
+            </div>
+
+            <div class="audit-summary-card">
+              <div class="audit-pill success">Secure</div>
+              <span class="audit-metric-num" id="audit-num-strong">0</span>
+              <span class="audit-metric-title">Robust Passwords</span>
+              <p class="text-xs text-muted">High entropy with mixed character classes</p>
+            </div>
+          </div>
+
+          <!-- Vulnerable Items Listing -->
+          <div class="card audit-results-card">
+            <div class="card-header">
+              <h3 class="card-title">Identified Vulnerabilities &amp; Action Plan</h3>
+            </div>
+            <div class="card-body">
+              <div id="audit-issues-container" class="audit-issues-list">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ================= VIEW 6: SETTINGS ================= -->
+        <section id="view-settings" class="view-panel">
+          <div class="view-header-row">
+            <div>
+              <h2>Vault Settings &amp; Cryptographic Controls</h2>
+              <p class="text-muted">Configure zero-knowledge parameters, auto-lock timers, and vault backups.</p>
+            </div>
+          </div>
+
+          <div class="settings-grid">
+            
+            <!-- Card 1: Change Master Password -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">Change Master Password</h3>
+                  <p class="card-subtitle">Atomically re-encrypts all vault records with a freshly derived key</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <form id="form-change-master-pass">
+                  <div class="form-group">
+                    <label for="change-curr-pass">Current Master Password</label>
+                    <input type="password" id="change-curr-pass" required placeholder="Verify current passphrase">
+                  </div>
+                  <div class="form-group">
+                    <label for="change-new-pass">New Master Password</label>
+                    <input type="password" id="change-new-pass" required minlength="10" placeholder="At least 10 characters">
+                  </div>
+                  <div class="form-group">
+                    <label for="change-confirm-pass">Confirm New Master Password</label>
+                    <input type="password" id="change-confirm-pass" required minlength="10" placeholder="Re-enter new passphrase">
+                  </div>
+                  <button type="submit" class="btn btn-primary">
+                    <span>Re-Encrypt Vault with New Key</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Card 2: Security & Auto-Lock Preferences -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">Security &amp; Session Auto-Lock</h3>
+                  <p class="card-subtitle">Control in-memory key eviction and clipboard clearance</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="setting-item-row">
+                  <div>
+                    <label for="setting-autolock-select" class="font-bold">Inactivity Auto-Lock Timeout</label>
+                    <p class="text-xs text-muted">Vault key is destroyed from RAM after idle duration</p>
+                  </div>
+                  <select id="setting-autolock-select" class="form-select width-auto">
+                    <option value="1">1 Minute</option>
+                    <option value="5" selected>5 Minutes</option>
+                    <option value="15">15 Minutes</option>
+                    <option value="30">30 Minutes</option>
+                    <option value="60">1 Hour</option>
+                    <option value="0">Never (Unsafe)</option>
+                  </select>
+                </div>
+
+                <div class="setting-item-row">
+                  <div>
+                    <label for="setting-clipboard-select" class="font-bold">Clipboard Auto-Clear</label>
+                    <p class="text-xs text-muted">Clear clipboard after copying credentials</p>
+                  </div>
+                  <select id="setting-clipboard-select" class="form-select width-auto">
+                    <option value="15">15 Seconds</option>
+                    <option value="30" selected>30 Seconds</option>
+                    <option value="60">60 Seconds</option>
+                    <option value="0">Do Not Clear</option>
+                  </select>
+                </div>
+
+                <div class="setting-item-row">
+                  <div>
+                    <label class="font-bold">Interface Theme</label>
+                    <p class="text-xs text-muted">Toggle between Dark Navy Purple and Light Theme</p>
+                  </div>
+                  <button type="button" class="btn btn-outline btn-sm" id="btn-settings-toggle-theme">
+                    Toggle Light / Dark
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3: Backups & Portability -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">Encrypted Backup &amp; Restore</h3>
+                  <p class="card-subtitle">Zero-knowledge JSON backups and data mobility</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="backup-actions-grid">
+                  <div class="backup-action-card">
+                    <h4>Export Encrypted Vault</h4>
+                    <p class="text-xs text-muted">Exports AES-256-GCM ciphertexts and salt. Can be stored anywhere safely.</p>
+                    <button type="button" class="btn btn-outline btn-sm" id="btn-export-encrypted">
+                      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                      </svg>
+                      <span>Export Encrypted (.json)</span>
+                    </button>
+                  </div>
+
+                  <div class="backup-action-card">
+                    <h4>Restore from Backup</h4>
+                    <p class="text-xs text-muted">Import a previously exported VaultKey backup file.</p>
+                    <label class="btn btn-outline btn-sm file-upload-btn">
+                      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                      </svg>
+                      <span>Import Backup (.json)</span>
+                      <input type="file" id="file-import-vault" accept=".json" class="hidden">
+                    </label>
+                  </div>
+
+                  <div class="backup-action-card">
+                    <h4>Emergency Recovery Kit</h4>
+                    <p class="text-xs text-muted">Re-download your printable HTML emergency kit sheet.</p>
+                    <button type="button" class="btn btn-outline btn-sm" id="btn-settings-download-kit">
+                      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 8v4"></path>
+                        <path d="M12 16h.01"></path>
+                      </svg>
+                      <span>Download Emergency Sheet</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4: Danger Zone -->
+            <div class="card danger-card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title text-danger">Danger Zone</h3>
+                  <p class="card-subtitle">Permanent vault purging and cryptographic erasure</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <p class="text-sm">Deleting your vault will purge all encrypted items, keys, and salts from local IndexedDB storage. This cannot be undone.</p>
+                <button type="button" class="btn btn-danger btn-sm" id="btn-purge-vault">
+                  <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  </svg>
+                  <span>Delete Vault &amp; Wipe All Records</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+
+  <!-- ================================================================= -->
+  <!-- 4. MODALS (ADD/EDIT ITEM, ITEM DETAILS, QUICK GENERATOR)          -->
+  <!-- ================================================================= -->
+
+  <!-- ADD / EDIT ITEM MODAL -->
+  <div id="modal-item-editor" class="modal-backdrop">
+    <div class="modal-card modal-md">
+      <div class="modal-header">
+        <div class="modal-title-with-icon">
+          <div class="icon-bubble purple" id="modal-editor-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 id="modal-editor-title">Add Vault Item</h3>
+            <p class="text-muted">Item will be encrypted with AES-256-GCM before writing to storage.</p>
+          </div>
+        </div>
+        <button type="button" class="btn-icon-close modal-close-btn">&times;</button>
+      </div>
+
+      <form id="form-item-editor" autocomplete="off">
+        <input type="hidden" id="item-edit-id">
+        
+        <div class="modal-body">
+          <!-- Item Type Selector Tabs -->
+          <div class="tab-pill-group">
+            <button type="button" class="tab-pill active" data-item-type="login">Login / Password</button>
+            <button type="button" class="tab-pill" data-item-type="note">Secure Note</button>
+          </div>
+
+          <!-- Website / App Name -->
+          <div class="form-group">
+            <label for="item-title">Title / Name *</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+              <input type="text" id="item-title" placeholder="e.g. Netflix, Personal Gmail, AWS" required>
+            </div>
+          </div>
+
+          <!-- Category Selection -->
+          <div class="form-group">
+            <label for="item-category">Category</label>
+            <select id="item-category" class="form-select">
+              <option value="Social Media">Social Media</option>
+              <option value="Email">Email</option>
+              <option value="Banking">Banking</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Education">Education</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Wi-Fi">Wi-Fi</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <!-- Fields specific to Login type -->
+          <div id="login-specific-fields">
+            <!-- Website URL -->
+            <div class="form-group">
+              <label for="item-url">Website URL</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="2" y1="12" x2="22" y2="12"></line>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+                <input type="url" id="item-url" placeholder="https://example.com">
+              </div>
+            </div>
+
+            <!-- Username / Email -->
+            <div class="form-group">
+              <label for="item-username">Username or Email</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <input type="text" id="item-username" placeholder="alex@domain.com">
+              </div>
+            </div>
+
+            <!-- Password with Inline Generator -->
+            <div class="form-group">
+              <div class="label-with-hint">
+                <label for="item-password">Password</label>
+                <button type="button" class="btn-link text-xs" id="btn-inline-generate">
+                  <svg class="icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="16 3 21 3 21 8"></polyline>
+                    <line x1="4" y1="20" x2="21" y2="3"></line>
+                    <polyline points="21 16 21 21 16 21"></polyline>
+                    <line x1="15" y1="15" x2="21" y2="21"></line>
+                    <line x1="4" y1="4" x2="9" y2="9"></line>
+                  </svg>
+                  <span>Generate Strong Password</span>
+                </button>
+              </div>
+              <div class="input-wrapper">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <input type="password" id="item-password" placeholder="Enter or generate password">
+                <button type="button" class="btn-input-action" data-toggle-pass="item-password" title="Show/Hide">
+                  <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+              </div>
+              <!-- Strength meter -->
+              <div class="password-meter-container">
+                <div class="strength-track">
+                  <div id="item-strength-bar" class="strength-fill" style="width: 0%"></div>
+                </div>
+                <div class="strength-meta">
+                  <span id="item-strength-text" class="strength-label">Password strength</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notes Field -->
+          <div class="form-group">
+            <label for="item-notes">Encrypted Notes &amp; Additional Data</label>
+            <textarea id="item-notes" rows="3" placeholder="Security questions, backup codes, server IPs, pin codes..."></textarea>
+          </div>
+
+          <!-- Favorite toggle -->
+          <div class="checkbox-group">
+            <label class="custom-checkbox-label">
+              <input type="checkbox" id="item-favorite">
+              <span class="checkbox-box"></span>
+              <span class="checkbox-text">Mark as Favorite (pinned on dashboard)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline modal-close-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+            <span id="btn-save-item-text">Save Encrypted Item</span>
+          </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Toast Notification Container -->
-  <div class="toast-container" id="toast-container"></div>
 
-  <!-- ==========================================================================
-       Footer
-       ========================================================================== -->
-  <footer class="footer">
-    <div class="footer-content">
-      <div style="display: flex; align-items: center; gap: 0.75rem;">
-        <div class="brand-icon" style="width: 32px; height: 32px;">
-          <i data-lucide="shield-check" style="width: 18px; height: 18px;"></i>
+  <!-- VIEW ITEM DETAIL MODAL -->
+  <div id="modal-item-view" class="modal-backdrop">
+    <div class="modal-card modal-md">
+      <div class="modal-header">
+        <div class="modal-title-with-icon">
+          <div class="item-avatar-icon large" id="view-modal-avatar">VK</div>
+          <div>
+            <h3 id="view-modal-title">Item Title</h3>
+            <span class="category-badge" id="view-modal-category">Social Media</span>
+          </div>
         </div>
-        <span style="font-weight: 700; letter-spacing: -0.02em;">VAULT KEY</span>
+        <button type="button" class="btn-icon-close modal-close-btn">&times;</button>
       </div>
-      <div class="footer-credits">
-        Zero-Knowledge Web Crypto Architecture &bull; Client-Side AES-256-GCM &bull; 100% Private
+
+      <div class="modal-body">
+        <div class="detail-row">
+          <span class="detail-label">Website URL</span>
+          <div class="detail-value-box">
+            <a href="#" target="_blank" rel="noopener noreferrer" id="view-modal-url" class="link-external">
+              <span id="view-modal-url-text">https://...</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Username / Email</span>
+          <div class="detail-value-box">
+            <span id="view-modal-username" class="font-mono">user@example.com</span>
+            <button type="button" class="btn-icon-copy" id="btn-copy-view-user" title="Copy Username">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Password</span>
+          <div class="detail-value-box">
+            <span id="view-modal-password" class="font-mono password-masked">&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</span>
+            <div class="detail-actions">
+              <button type="button" class="btn-icon-subtle" id="btn-toggle-view-pass" title="Show/Hide">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+              <button type="button" class="btn-icon-copy" id="btn-copy-view-pass" title="Copy Password">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Encrypted Notes</span>
+          <div class="detail-notes-box" id="view-modal-notes">No additional notes.</div>
+        </div>
+
+        <div class="detail-meta-row">
+          <span id="view-modal-created">Created: --</span>
+          <span id="view-modal-updated">Updated: --</span>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline modal-close-btn">Close</button>
+        <button type="button" class="btn btn-primary" id="btn-edit-current-view">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+          <span>Edit Item</span>
+        </button>
       </div>
     </div>
-  </footer>
+  </div>
 
-  <!-- Application Scripts -->
-  <script src="js/crypto-vault.js"></script>
-  <script src="js/generator.js"></script>
-  <script src="js/vault-3d.js"></script>
-  <script src="js/app.js"></script>
+
+  <!-- LOCK SCREEN BACKDROP (When idle timer fires or manual lock) -->
+  <div id="lock-screen-overlay" class="lock-screen-overlay hidden">
+    <div class="lock-card">
+      <div class="brand-icon-glow">
+        <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+      </div>
+      <h2>Vault is Locked</h2>
+      <p class="text-muted">Master key has been evicted from memory. Enter your master password to unlock.</p>
+
+      <form id="lock-screen-form" autocomplete="off">
+        <div class="form-group">
+          <div class="input-wrapper">
+            <input type="password" id="lock-unlock-password" placeholder="Master Password" required autofocus>
+            <button type="button" class="btn-input-action" data-toggle-pass="lock-unlock-password">
+              <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+          </svg>
+          <span>Unlock Vault</span>
+        </button>
+      </form>
+
+      <div class="lock-footer-row">
+        <button type="button" class="btn-link text-xs" id="btn-lock-screen-logout">Log Out of Vault</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- SCRIPT -->
+  <script src="script.js"></script>
 </body>
 </html>
